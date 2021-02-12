@@ -1,10 +1,20 @@
 import React from 'react'
 
-// import './App.css'
+import UserList from './UserList'
+
 import './App.scss'
 import Filter from './assets/svg/filter (1).svg'
 
 export default function App() {
+    const [users, setUsers] = React.useState([])
+    React.useEffect(() => {
+        fetch('https://5ebbb8e5f2cfeb001697d05c.mockapi.io/users')
+            .then((resp) => resp.json())
+            .then(json => {
+                setUsers(json);
+            })
+    }, []);
+    console.log(users)
     return (
         <div>
             <div className="header__title inner">Список пользователей</div>
@@ -22,50 +32,7 @@ export default function App() {
                 <div className="sort-buttons__date text active">Дата регистрации</div>
                 <div className="sort-buttons__rating text">Рейтинг</div>
             </div>
-            <div className="users-table inner">
-                <div className="users-table__header">
-                    <div className="name text">Имя пользователя</div>
-                    <div className="email text">Email</div>
-                    <div className="date text">Дата регистрации</div>
-                    <div className="rating text">Рейтинг</div>
-                    <div className="remove">&#10006;</div>
-                </div>
-                <div className="users-table__user-info">
-                    <div className="name">Username</div>
-                    <div className="email text">mail@mail.ru</div>
-                    <div className="date text">11.11.1111</div>
-                    <div className="rating text">228</div>
-                    <div className="delete-btn">&#10006;</div>
-                </div>
-                <div className="users-table__user-info">
-                    <div className="name">Username</div>
-                    <div className="email text">mail@mail.ru</div>
-                    <div className="date text">11.11.1111</div>
-                    <div className="rating text">228</div>
-                    <div className="delete-btn">&#10006;</div>
-                </div>
-                <div className="users-table__user-info">
-                    <div className="name">Username</div>
-                    <div className="email text">mail@mail.ru</div>
-                    <div className="date text">11.11.1111</div>
-                    <div className="rating text">228</div>
-                    <div className="delete-btn">&#10006;</div>
-                </div>
-                <div className="users-table__user-info">
-                    <div className="name">Username</div>
-                    <div className="email text">mail@mail.ru</div>
-                    <div className="date text">11.11.1111</div>
-                    <div className="rating text">228</div>
-                    <div className="delete-btn">&#10006;</div>
-                </div>
-                <div className="users-table__user-info">
-                    <div className="name">Username</div>
-                    <div className="email text">mail@mail.ru</div>
-                    <div className="date text">11.11.1111</div>
-                    <div className="rating text">228</div>
-                    <div className="delete-btn">&#10006;</div>
-                </div>
-            </div>
+            <UserList items={users} />
         </div >
     )
 }

@@ -63,8 +63,9 @@ body {
     &__clear-btn {
         display: flex;
         align-items: center;
-        svg {
+        img {
             margin-right: 10px;
+            margin-top: -2px;
         }
         span {
             cursor: pointer;
@@ -109,6 +110,17 @@ body {
         .remove {
             visibility: hidden;
         }
+        div {
+            max-width: 250px;
+            width: 100%;
+            margin-right: 5px;
+            word-break: break-all;
+        }
+        .date,
+        .rating,
+        .delete-btn {
+            text-align: end;
+        }
     }
 
     &__user-info {
@@ -126,6 +138,24 @@ body {
         .delete-btn {
             color: #000000;
             cursor: pointer;
+        }
+        div {
+            max-width: 250px;
+            width: 100%;
+            margin-right: 5px;
+            // white-space: pre-wrap;
+            // overflow-wrap: break-word;
+            // word-wrap: break-word;
+            word-break: break-all;
+        }
+        .date,
+        .rating,
+        .delete-btn {
+            text-align: end;
+        }
+        .email {
+            display: flex;
+            flex-wrap: wrap;
         }
     }
     &__user-info:nth-last-child(1) {
