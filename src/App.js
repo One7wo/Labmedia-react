@@ -9,11 +9,13 @@ import Filter from './assets/svg/filter (1).svg'
 export default function App() {
 
     const [users, setUsers] = React.useState([])
+    const [init, setInit] = React.useState([])
+
     React.useEffect(() => {
         axios.get('https://5ebbb8e5f2cfeb001697d05c.mockapi.io/users')
             .then(({ data }) => {
                 setUsers(data)
-                console.log('fetch', data)
+                setInit(data)
             })
 
         // fetch('https://5ebbb8e5f2cfeb001697d05c.mockapi.io/users')
@@ -23,13 +25,29 @@ export default function App() {
         //     })
     }, []);
 
+    const dataSearch = e => {
+        const value = e.target.value.toLowerCase();
+        const filterEmail = init.filter(email => {
+
+            return email.email.toLowerCase().includes(value);
+        });
+
+        const filterUsers = init.filter(user => {
+
+            return user.username.toLowerCase().includes(value);
+        });
+        const filter = [...new Set([...filterUsers, ...filterEmail])]
+        setUsers(filter)
+    };
+
+
     return (
 
         <div>
             <div className="header__title inner">Список пользователей</div>
             <div className="search-form inner">
                 <div className="search-form__field">
-                    <input type="text" placeholder="Поиск по имени или e-mail"></input>
+                    <input type="text" placeholder="Поиск по имени или e-mail" onChange={dataSearch}></input>
                 </div>
                 <div className="search-form__clear-btn">
                     <img src={Filter} alt="img" />
