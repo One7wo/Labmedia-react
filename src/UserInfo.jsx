@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export default function UserInfo({ username, email, registration_date, rating }) {
     return (
@@ -11,3 +12,11 @@ export default function UserInfo({ username, email, registration_date, rating })
         </div>
     )
 }
+
+UserInfo.propTypes = {
+    username: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    rating: PropTypes.number.isRequired,
+}
+
+
