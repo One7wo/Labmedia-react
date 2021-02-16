@@ -15,6 +15,9 @@ body {
 .text {
     font-size: 14px;
 }
+.visible {
+    display: none;
+}
 // === / common ===
 
 // === header ===
@@ -48,7 +51,7 @@ body {
                 border: 1px solid darken(#d6d6d6, 16%);
             }
         }
-        margin-bottom: 20px;
+        // margin-bottom: 20px;
     }
     &__field::before {
         content: "";
@@ -63,9 +66,12 @@ body {
     &__clear-btn {
         display: flex;
         align-items: center;
+        margin-top: 20px;
+
         img {
             margin-right: 10px;
             margin-top: -2px;
+            cursor: pointer;
         }
         span {
             cursor: pointer;

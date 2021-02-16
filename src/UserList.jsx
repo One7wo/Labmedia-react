@@ -1,9 +1,9 @@
 import React from 'react'
 import UserInfo from './UserInfo'
 
-export default function UserList({ items }) {
-    const [list, setList] = React.useState(items)
-    const [toggleRating, setToggleRating] = React.useState(null)
+export default function UserList({ items, active, onActive, visibleClr }) {
+
+    const [toggleRatingActive, setToggleRatingActive] = React.useState(null)
     const [toggleDate, setToggleDate] = React.useState(null)
 
     return (
@@ -13,31 +13,35 @@ export default function UserList({ items }) {
                 <div
                     onClick={() => {
                         if (toggleDate) {
-                            setList(items.sort((a, b) => {
+                            items.sort((a, b) => {
                                 return b.registration_date.split('T')[0].split('-').join('') - a.registration_date.split('T')[0].split('-').join('')
-                            }))
+                            })
                             setToggleDate(!toggleDate)
                         }
                         else {
-                            setList(items.sort((a, b) => a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join('')))
+                            items.sort((a, b) => a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join(''))
                             setToggleDate(!toggleDate)
                         }
-                        setToggleRating(null)
+                        setToggleRatingActive(null)
+                        visibleClr()
+                        onActive()
                     }}
-                    className={`sort-buttons__date text ${toggleDate != null ? 'active' : ''}`}> Дата регистрации</div>
+                    className={`sort-buttons__date text ${toggleDate != null && active ? 'active' : ''}`}> Дата регистрации</div>
                 <div
                     onClick={() => {
-                        if (toggleRating) {
-                            setList(items.sort((a, b) => b.rating - a.rating))
-                            setToggleRating(!toggleRating)
+                        if (toggleRatingActive) {
+                            items.sort((a, b) => b.rating - a.rating)
+                            setToggleRatingActive(!toggleRatingActive)
                         }
                         else {
-                            setList(items.sort((a, b) => a.rating - b.rating))
-                            setToggleRating(!toggleRating)
+                            items.sort((a, b) => a.rating - b.rating)
+                            setToggleRatingActive(!toggleRatingActive)
                         }
                         setToggleDate(null)
+                        visibleClr()
+                        onActive()
                     }}
-                    className={`sort-buttons__rating text ${toggleRating != null ? 'active' : ''}`} >Рейтинг</div>
+                    className={`sort-buttons__rating text ${toggleRatingActive != null && active ? 'active' : ''} `} >Рейтинг</div>
             </div>
             <div className="users-table inner">
                 <div className="users-table__header">

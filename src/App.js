@@ -11,6 +11,9 @@ export default function App() {
     const [users, setUsers] = React.useState([])
     const [init, setInit] = React.useState([])
 
+    const [active, setActive] = React.useState(true)
+    const [visibleClr, setVisibleClr] = React.useState(false)
+
     React.useEffect(() => {
         axios.get('https://5ebbb8e5f2cfeb001697d05c.mockapi.io/users')
             .then(({ data }) => {
@@ -25,8 +28,25 @@ export default function App() {
         //     })
     }, []);
 
+    const clear = () => {
+        const clr = init.sort((a, b) => a.id - b.id)
+        setUsers(clr)
+        document.getElementsByTagName('input')[0].value = ''
+        setActive(false)
+        setVisibleClr(false)
+    }
+
+    const refreshActiveSort = () => {
+        setActive(true)
+    }
+
+    const visibleClearBtn = () => {
+        setVisibleClr(true)
+    }
+
     const dataSearch = e => {
         const value = e.target.value.toLowerCase();
+
         const filterEmail = init.filter(email => {
 
             return email.email.toLowerCase().includes(value);
@@ -36,10 +56,13 @@ export default function App() {
 
             return user.username.toLowerCase().includes(value);
         });
+
         const filter = [...new Set([...filterUsers, ...filterEmail])]
         setUsers(filter)
-    };
+        const a = document.getElementsByClassName('active')[0]
 
+        value.length > 0 || a ? visibleClearBtn() : setVisibleClr(false)
+    };
 
     return (
 
@@ -49,12 +72,17 @@ export default function App() {
                 <div className="search-form__field">
                     <input type="text" placeholder="Поиск по имени или e-mail" onChange={dataSearch}></input>
                 </div>
-                <div className="search-form__clear-btn">
-                    <img src={Filter} alt="img" />
-                    <span className="text">Очистить фильтр</span>
+                <div className="search-form__clear-btn" onClick={clear}>
+                    <img src={Filter} alt="img" className={`${!visibleClr && 'visible'}`} />
+                    <span className={`text ${!visibleClr && 'visible'}`}>Очистить фильтр</span>
                 </div>
             </div>
-            <UserList items={users} />
+            <UserList
+                items={users}
+                active={active}
+                onActive={refreshActiveSort}
+                visibleClr={visibleClearBtn}
+            />
         </div >
     )
 }
