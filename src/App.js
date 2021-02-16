@@ -1,10 +1,14 @@
 import React from 'react';
 import axios from 'axios'
 
-import UserList from './UserList'
+import UserList from './UserList';
+import Search from './Search';
+import ClearButton from './ClearButton';
 
-import './App.scss'
-import Filter from './assets/svg/filter (1).svg'
+import './App.scss';
+
+
+
 
 export default function App() {
 
@@ -69,13 +73,8 @@ export default function App() {
         <div>
             <div className="header__title inner">Список пользователей</div>
             <div className="search-form inner">
-                <div className="search-form__field">
-                    <input type="text" placeholder="Поиск по имени или e-mail" onChange={dataSearch}></input>
-                </div>
-                <div className="search-form__clear-btn" onClick={clear}>
-                    <img src={Filter} alt="img" className={`${!visibleClr && 'visible'}`} />
-                    <span className={`text ${!visibleClr && 'visible'}`}>Очистить фильтр</span>
-                </div>
+                <Search search={dataSearch} />
+                <ClearButton clear={clear} visible={visibleClr} />
             </div>
             <UserList
                 items={users}
