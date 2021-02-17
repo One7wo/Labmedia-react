@@ -22,7 +22,7 @@ export default function UserList({ items, active, onActive, visibleClr, loading,
                             //allUsers - correct array for sort in page and application
                             const allUsers = all.slice(0, lastUser - pageSize).concat(items.sort((a, b) => {
                                 return b.registration_date.split('T')[0].split('-').join('') - a.registration_date.split('T')[0].split('-').join('')
-                            }), all.slice(lastUser, 25));
+                            }), all.slice(lastUser, all.length));
 
                             //update all userList
                             refresh(allUsers)
@@ -32,7 +32,7 @@ export default function UserList({ items, active, onActive, visibleClr, loading,
                         else {
                             const allUsers = all.slice(0, lastUser - pageSize).concat(items.sort((a, b) => {
                                 return a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join('')
-                            }), all.slice(lastUser, 25));
+                            }), all.slice(lastUser, all.length));
                             refresh(allUsers);
                             setToggleDate(!toggleDate);
                         }
