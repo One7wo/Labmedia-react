@@ -146,7 +146,11 @@ body {
         }
         .delete-btn {
             color: #000000;
-            cursor: pointer;
+            opacity: 0.5;
+            // cursor: pointer;
+            span {
+                cursor: not-allowed;
+            }
         }
         div {
             max-width: 250px;
@@ -171,12 +175,16 @@ body {
 // === / users-table ===
 
 // === pagination ===
+nav {
+    @media (max-width: 630px) {
+        text-align: center;
+    }
+}
 .pagination {
     margin-top: 10px;
     color: #62a6ff;
     font-weight: 600;
     cursor: pointer;
-
     display: inline-flex;
     list-style-type: none;
     background: #fff;

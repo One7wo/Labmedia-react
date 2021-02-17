@@ -1,13 +1,16 @@
-import React from 'react'
-import UserInfo from './UserInfo'
+import React from 'react';
+import UserInfo from './UserInfo';
 
-export default function UserList({ items, active, onActive, visibleClr, loading, refresh, all, lastUser }) {
+export default function UserList({ items, active, onActive, visibleClr, loading, refresh, all, lastUser, pageSize }) {
 
-    const [toggleRatingActive, setToggleRatingActive] = React.useState(null)
-    const [toggleDate, setToggleDate] = React.useState(null)
+    //toggle active sorts
+    const [toggleRatingActive, setToggleRatingActive] = React.useState(null);
+    const [toggleDate, setToggleDate] = React.useState(null);
+
     if (loading) {
         return <h2 className="inner loading">Loading...</h2>
     }
+
     return (
         <div>
             <div className="sort-buttons inner">
@@ -15,38 +18,50 @@ export default function UserList({ items, active, onActive, visibleClr, loading,
                 <div
                     onClick={() => {
                         if (toggleDate) {
-                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => {
 
+                            //allUsers - correct array for sort in page and application
+                            const allUsers = all.slice(0, lastUser - pageSize).concat(items.sort((a, b) => {
                                 return b.registration_date.split('T')[0].split('-').join('') - a.registration_date.split('T')[0].split('-').join('')
-                            }), all.slice(lastUser, 25))
+                            }), all.slice(lastUser, 25));
+
+                            //update all userList
                             refresh(allUsers)
+
                             setToggleDate(!toggleDate)
                         }
                         else {
-                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => { return a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join('') }), all.slice(lastUser, 25))
-                            refresh(allUsers)
-                            setToggleDate(!toggleDate)
+                            const allUsers = all.slice(0, lastUser - pageSize).concat(items.sort((a, b) => {
+                                return a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join('')
+                            }), all.slice(lastUser, 25));
+                            refresh(allUsers);
+                            setToggleDate(!toggleDate);
                         }
-                        setToggleRatingActive(null)
-                        visibleClr()
-                        onActive()
+
+                        //remove .active in button rating  sort
+                        setToggleRatingActive(null);
+
+                        //activate visible button clear filters
+                        visibleClr();
+
+                        //fist click add .active
+                        onActive();
                     }}
                     className={`sort-buttons__date text ${toggleDate != null && active ? 'active' : ''}`}> Дата регистрации</div>
                 <div
                     onClick={() => {
                         if (toggleRatingActive) {
-                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => b.rating - a.rating), all.slice(lastUser, 25))
-                            refresh(allUsers)
-                            setToggleRatingActive(!toggleRatingActive)
+                            const allUsers = all.slice(0, lastUser - pageSize).concat(items.sort((a, b) => b.rating - a.rating), all.slice(lastUser, 25))
+                            refresh(allUsers);
+                            setToggleRatingActive(!toggleRatingActive);
                         }
                         else {
-                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => a.rating - b.rating), all.slice(lastUser, 25))
-                            refresh(allUsers)
-                            setToggleRatingActive(!toggleRatingActive)
+                            const allUsers = all.slice(0, lastUser - pageSize).concat(items.sort((a, b) => a.rating - b.rating), all.slice(lastUser, 25))
+                            refresh(allUsers);
+                            setToggleRatingActive(!toggleRatingActive);
                         }
-                        setToggleDate(null)
-                        visibleClr()
-                        onActive()
+                        setToggleDate(null);
+                        visibleClr();
+                        onActive();
                     }}
                     className={`sort-buttons__rating text ${toggleRatingActive != null && active ? 'active' : ''} `} >Рейтинг</div>
             </div>

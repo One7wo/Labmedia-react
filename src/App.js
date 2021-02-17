@@ -9,19 +9,25 @@ import Pagination from './Pagination';
 import './App.scss';
 
 export default function App() {
-
+    //Json state
     const [users, setUsers] = React.useState([])
     const [init, setInit] = React.useState([])
 
+
     const [loading, setLoading] = React.useState(false);
+
+    //Paginate state
     const [currentPage, setCurrentPage] = React.useState(1);
     const [usersPerPage] = React.useState(5);
 
-    const [active, setActive] = React.useState(true)
-    const [visibleClr, setVisibleClr] = React.useState(false)
+    //Sort button active state
+    const [active, setActive] = React.useState(true);
+
+    const [visibleClr, setVisibleClr] = React.useState(false);
 
     const [activePage, setActivePage] = React.useState(1);
 
+    //Fetch data & load in state
     React.useEffect(() => {
         setLoading(true);
         axios.get('https://5ebbb8e5f2cfeb001697d05c.mockapi.io/users')
@@ -32,6 +38,7 @@ export default function App() {
             })
     }, []);
 
+    //Calc page param
     const indexLastUser = currentPage * usersPerPage;
     const indexFirstUser = indexLastUser - usersPerPage;
     const currentUsers = users.slice(indexFirstUser, indexLastUser);
@@ -40,24 +47,23 @@ export default function App() {
     const paginate = (pageNumber) => {
         setCurrentPage(pageNumber);
         setActivePage(pageNumber);
-        setActive(false)
+        setActive(false);
     }
 
     const clear = () => {
-        const clr = init.sort((a, b) => a.id - b.id)
-        setUsers(clr)
-        document.getElementsByTagName('input')[0].value = ''
-        setActive(false)
-        setVisibleClr(false)
-        // setActivePage(1)
+        const clr = init.sort((a, b) => a.id - b.id);
+        setUsers(clr);
+        document.getElementsByTagName('input')[0].value = '';
+        setActive(false);
+        setVisibleClr(false);
     }
 
     const refreshActiveSort = () => {
-        setActive(true)
+        setActive(true);
     }
 
     const visibleClearBtn = () => {
-        setVisibleClr(true)
+        setVisibleClr(true);
     }
 
     const dataSearch = e => {
@@ -73,12 +79,15 @@ export default function App() {
             return user.username.toLowerCase().includes(value);
         });
 
-        const filter = [...new Set([...filterUsers, ...filterEmail])]
-        setUsers(filter)
-        const a = document.getElementsByClassName('active')[0];
-        paginate(1)
+        const filter = [...new Set([...filterUsers, ...filterEmail])];
+        setUsers(filter);
 
-        value.length > 0 || a ? visibleClearBtn() : setVisibleClr(false)
+        paginate(1);
+
+        const isActive = document.getElementsByClassName('active')[0];
+
+        //Check filters
+        value.length > 0 || isActive ? visibleClearBtn() : setVisibleClr(false);
     };
 
     return (
@@ -92,6 +101,7 @@ export default function App() {
                 items={currentUsers}
                 refresh={setUsers}
                 lastUser={indexLastUser}
+                pageSize={usersPerPage}
                 all={users}
                 active={active}
                 onActive={refreshActiveSort}

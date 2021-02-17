@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import Filter from './assets/svg/filter (1).svg';
 
 export default function ClearButton({ clear, visible }) {
