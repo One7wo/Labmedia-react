@@ -1,11 +1,13 @@
 import React from 'react'
 import UserInfo from './UserInfo'
 
-export default function UserList({ items, active, onActive, visibleClr }) {
+export default function UserList({ items, active, onActive, visibleClr, loading, refresh, all, lastUser }) {
 
     const [toggleRatingActive, setToggleRatingActive] = React.useState(null)
     const [toggleDate, setToggleDate] = React.useState(null)
-
+    if (loading) {
+        return <h2 className="inner loading">Loading...</h2>
+    }
     return (
         <div>
             <div className="sort-buttons inner">
@@ -13,13 +15,16 @@ export default function UserList({ items, active, onActive, visibleClr }) {
                 <div
                     onClick={() => {
                         if (toggleDate) {
-                            items.sort((a, b) => {
+                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => {
+
                                 return b.registration_date.split('T')[0].split('-').join('') - a.registration_date.split('T')[0].split('-').join('')
-                            })
+                            }), all.slice(lastUser, 25))
+                            refresh(allUsers)
                             setToggleDate(!toggleDate)
                         }
                         else {
-                            items.sort((a, b) => a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join(''))
+                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => { return a.registration_date.split('T')[0].split('-').join('') - b.registration_date.split('T')[0].split('-').join('') }), all.slice(lastUser, 25))
+                            refresh(allUsers)
                             setToggleDate(!toggleDate)
                         }
                         setToggleRatingActive(null)
@@ -30,11 +35,13 @@ export default function UserList({ items, active, onActive, visibleClr }) {
                 <div
                     onClick={() => {
                         if (toggleRatingActive) {
-                            items.sort((a, b) => b.rating - a.rating)
+                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => b.rating - a.rating), all.slice(lastUser, 25))
+                            refresh(allUsers)
                             setToggleRatingActive(!toggleRatingActive)
                         }
                         else {
-                            items.sort((a, b) => a.rating - b.rating)
+                            const allUsers = all.slice(0, lastUser - 5).concat(items.sort((a, b) => a.rating - b.rating), all.slice(lastUser, 25))
+                            refresh(allUsers)
                             setToggleRatingActive(!toggleRatingActive)
                         }
                         setToggleDate(null)
